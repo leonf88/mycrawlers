@@ -9,6 +9,7 @@ var article_model = mongoose.model("article", {
   link: 'string',
   year: 'string',
   author: 'string',
+  abstract: 'string',
   _pname: 'string',
   _dname: 'string',
   _type: 'string',

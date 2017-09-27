@@ -93,7 +93,8 @@ MONGODB_URL = "localhost:27017"
 MONGODB_DB = "dblp"
 MONGODB_COLLECTION = "dblp"
 
-CONF_FILE = "/Users/valder/Codes/myproject/crawler/dblp/dblp/files/conf.txt"
-JOUR_FILE = "/Users/valder/Codes/myproject/crawler/dblp/dblp/files/jour.txt"
+from os import path
+CONF_FILE = path.abspath(path.join(path.curdir, "dblp/files/conf.txt"))
+JOUR_FILE = path.abspath(path.join(path.curdir, "dblp/files/jour.txt"))
 
 LOG_LEVEL = "INFO"
