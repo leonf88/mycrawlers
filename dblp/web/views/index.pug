@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Conferences
+
+  ul(class="list-group")
+    each e in conference_list
+      li(class="list-group-item")
+        a(href='/conf/'+e) #{e}
+
+  h1 Journals
+
+  ul(class="list-group")
+    each e in journal_list
+      li(class="list-group-item")
+        a(href='/jour/'+e) #{e}

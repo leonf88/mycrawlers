@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1
+    a(href='/') back
+    | >
+    a(href='/'+type+'/'+dname) #{dname}
+    | >
+    a(href='http://dblp.uni-trier.de/db/'+type+'/'+dname+'/'+pname) #{pname}
+
+  ul(class="list-group")
+    each e in data
+      li(class="list-group-item")
+        span [#{e["year"]}] #{e["title"]}

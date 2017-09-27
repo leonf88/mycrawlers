@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= dname
+
+  ul(class="list-group")
+    each e in pnames
+      li(class="list-group-item")
+        a(href='/'+type+'/'+dname+'/'+e) #{e}
