@@ -6,7 +6,8 @@ from ..utils.mongodb_client import MongoDBClient
 
 class LZSpider(scrapy.Spider):
     name = "lz"
-    start_urls = None
+    start_urls = ['http://www.lelezy.com/', ]
+    # start_urls = None
 
     def __init__(self, mongo_uri, mongo_db, mongo_coll):
         mongo_client = MongoDBClient(mongo_uri, mongo_db, mongo_coll)
