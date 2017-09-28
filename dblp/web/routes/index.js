@@ -1,6 +1,8 @@
 var express = require('express');
 var article_model = require('../models')
 var router = express.Router();
+var exec = require('child_process').exec,
+  child;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -46,6 +48,7 @@ router.get('/:type/:dname', function(req, res, next) {
   })
 });
 
+
 router.get('/:type/:dname/:pname', function(req, res, next) {
   var type = null;
   if (req.params.type == "conf") {
@@ -70,4 +73,15 @@ router.get('/:type/:dname/:pname', function(req, res, next) {
   })
 });
 
+// router.post('/run_issue_spider', function(req, res, next) {
+//   exec('cat *.js bad_file | wc -l',
+//     function(error, stdout, stderr) {
+//       console.log('stdout: ' + stdout);
+//       console.log('stderr: ' + stderr);
+//       if (error !== null) {
+//         console.log('exec error: ' + error);
+//       }
+//     })();
+// })
+//
 module.exports = router;

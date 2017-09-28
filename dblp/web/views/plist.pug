@@ -8,6 +8,8 @@ block content
     | >
     a(href='http://dblp.uni-trier.de/db/'+type+'/'+dname+'/'+pname) #{pname}
 
+  p Total has #{data.length} papers
+
   ul(class="list-group")
     div(class="panel-group", id="accordion")
       - var idx = 0;
@@ -18,8 +20,10 @@ block content
               h4(class="panel-title")
                 a(data-toggle="collapse", data-parent="#accordion", href="#coll" + idx, aria-expanded="true", aria-controls="coll"+idx)
                   span [#{e["year"]}] #{e["title"]}
+                div(class="pull-right")
+                  a(href=e["link"], class="text-right") LINK
+              span(class="name") #{e["author"]}
             div(id="coll"+idx, class="collapse" role="tabpanel")
               div(class="card-block")
                 span= e["abstract"]
-                
           - idx++

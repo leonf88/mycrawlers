@@ -6,58 +6,34 @@ import scrapy
 import bibtexparser
 
 
-class DBLPSpider(scrapy.Spider):
-    name = 'dblp'
-    BASE_URL = 'http://dblp.uni-trier.de'
+class DBLPSimpleSpider(scrapy.Spider):
+    name = 'dblp_issue'
 
-    def __init__(self, settings):
-        self.conf_file = settings.get("CONF_FILE", None)
-        self.jour_file = settings.get("JOUR_FILE", None)
-
-        self.conference_list = []
-        self.journal_list = []
-
-        if self.conf_file:
-            with open(self.conf_file, 'r') as fin:
-                self.conference_list = [e.strip() for e in filter(
-                    lambda line: not line.startswith("#"), fin.xreadlines())]
-        if self.jour_file:
-            with open(self.jour_file, 'r') as fin:
-                self.journal_list = [e.strip() for e in filter(
-                    lambda line: not line.startswith("#"), fin.xreadlines())]
-
-        self.logger.info("Conference List [%d], Journal List [%d]",
-                         len(self.conference_list), len(self.journal_list))
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        spider = cls(crawler.settings)
-        spider._set_crawler(crawler)
-        return spider
-
-    def start_requests(self):
-        for e in self.conference_list:
-            yield scrapy.Request(urlparse.urljoin(self.BASE_URL, "/db/conf/" + e), meta={"_type": "conference", "_dname": e})
-
-        for e in self.journal_list:
-            yield scrapy.Request(urlparse.urljoin(self.BASE_URL, "/db/journals/" + e), meta={"_type": "journal", "_dname": e})
+    def __init__(self, start_url="", *args, **kwargs):
+        super(DBLPSimpleSpider, self).__init__(*args, **kwargs)
+        if start_url is not "":
+            self.logger.info("start url %s", start_url)
+            self.start_urls.append(start_url)
 
     def parse(self, response):
-        if response.meta["_type"] is 'conference':
-            for link in response.xpath("//a[contains(text(), '[contents]')]/@href"):
-                yield response.follow(link, callback=self.parse_one_issue, meta=response.meta)
-        elif response.meta["_type"] is 'journal':
-            for link in response.xpath("//div[@id='main']/ul/li/a/@href"):
-                yield response.follow(link, callback=self.parse_one_issue, meta=response.meta)
-        else:
-            self.logger.info("unknown type %s.", response.meta["_type"])
+        meta = {}
+        ttype = response.url.split('/')[-3]
+        if ttype == 'conf':
+            meta["_type"] = "conference"
+        elif ttype == 'jour':
+            meta["_type"] = "journal"
+        meta["_dname"] = response.url.split('/')[-2]
+        meta["_pname"] = response.url.split('/')[-1].split('.')[0]
 
-    def parse_one_issue(self, response):
-        # TODO get conference section
-        meta = response.meta
-        meta["_pname"] = response.url.split("/")[-1].split(".")[0]
-        for link in response.xpath("//a[contains(text(), 'BibTeX')]/@href"):
-            yield response.follow(link, callback=self.get_bibtex, meta=meta)
+        # TODO storage structure
+        # proceedings
+        #   - session
+        #       - article list
+        for e in response.xpath('//header[not(contains(@class, "headline noline"))]'):
+            article_list = e.xpath('following-sibling::ul[1]')
+            meta["_session"] = e.css("::text").extract_first()
+            for link in article_list.xpath("./a[contains(text(), 'BibTeX')]/@href"):
+                yield response.follow(link, callback=self.get_bibtex, meta=meta)
 
     def get_bibtex(self, response):
         bibtexts = response.xpath(
