@@ -8,22 +8,40 @@ block content
     | >
     a(href='http://dblp.uni-trier.de/db/'+type+'/'+dname+'/'+pname) #{pname}
 
-  p Total has #{data.length} papers
+  console.log(data)
+  - var total = 0;
+  each session in data
+    each e in session['articles']
+      - total++
+  p Total has #{total} papers
 
-  ul(class="list-group")
-    div(class="panel-group", id="accordion")
-      - var idx = 0;
-      each e in data
-        li(class="list-group-item")
-          div(class="panel panel-success")
-            div(class="panel-heading")
-              h4(class="panel-title")
-                a(data-toggle="collapse", data-parent="#accordion", href="#coll" + idx, aria-expanded="true", aria-controls="coll"+idx)
-                  span [#{e["year"]}] #{e["title"]}
-                div(class="pull-right")
-                  a(href=e["link"], class="text-right") LINK
-              span(class="name") #{e["author"]}
-            div(id="coll"+idx, class="collapse" role="tabpanel")
-              div(class="card-block")
-                span= e["abstract"]
-          - idx++
+  - var idx = 0;
+  each session in data
+    - var articles = session['articles']
+    - var title = session['name']
+    header(class="session-title")
+      h3 #{title}
+    ul(class="list-group")
+      div(class="panel-group", id="accordion")
+        each e in articles
+          li(class="list-group-item")
+            div(class="panel panel-success")
+              div(class="panel-heading")
+                span(class="panel-title")
+                  a(data-toggle="collapse", data-parent="#accordion", href="#coll" + idx, aria-expanded="true", aria-controls="coll"+idx) [#{e["year"]}] #{e["title"]}
+                  div
+                    button(type="button" class="btn btn-default" aria-label="Left Align")
+                      a(href=e["link"], class="text-right")
+                        i(class="fa fa-link" aria-hidden="true")
+                    // button(type="button" class="btn btn-default" aria-label="Left Align")
+                    //   a(href="javascript: update_abstract('"+e['_hook']+"')", class="text-right")
+                    //     i(class="fa fa-refresh" aria-hidden="true")
+                    span #{e["_hook"]}
+                span(class="name") #{e["author"]}
+              div(id="coll"+idx, class="collapse" role="tabpanel")
+                div(class="card-block")
+                  span= e["abstract"]
+            - idx++
+
+block scripts
+  script(src='/javascripts/dblp.js')

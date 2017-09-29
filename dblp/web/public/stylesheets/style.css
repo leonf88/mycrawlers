@@ -11,3 +11,9 @@ a {
   color: #7d848a;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+header.session-title {
+  padding: 0px 16px 0px 24px;
+  margin: 4ex 0em 2ex 0em;
+  min-height: 27px;
+}
