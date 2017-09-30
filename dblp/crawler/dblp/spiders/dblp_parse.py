@@ -186,10 +186,11 @@ class DBLPParser(object):
         elif 'dl.acm.org/tab_abstract' in response.url:
             # dl.acm
             # abst = response.xpath("//p/text()").extract_first()
-            abst = "".join(response.xpath("//p//text()").extract())
+            # abst = "".join(response.xpath("//p//text()").extract())
+            abst = response.body
         elif 'dl.acm.org/citation' in response.url:
-            # return self.parse_acm(response)
-            self.logger.info("skip url %s", response.url)
+            return self.parse_acm(response)
+            # self.logger.info("skip url %s", response.url)
         elif 'www.usenix.org' in response.url:
             # usenix
             for field in response.xpath("//div[contains(@class,'field')]"):

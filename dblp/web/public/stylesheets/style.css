@@ -17,3 +17,21 @@ header.session-title {
   margin: 4ex 0em 2ex 0em;
   min-height: 27px;
 }
+
+img.red {
+  background: #c32b72;
+  position: absolute;
+  top: 18px;
+  left: 5px;
+  width: 12px;
+  height: 12px;
+}
+
+img.green {
+  background: #33c3ba;
+  position: absolute;
+  top: 18px;
+  left: 5px;
+  width: 12px;
+  height: 12px;
+}
