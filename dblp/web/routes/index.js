@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
   models.top_list_model.findOne({
     "_key": "top_list"
   }, function(err, data) {
-    if (err) return handleError(err);
+    if (err) return handleError(err, req, res, next);
     conference_list = data.conferences;
     journal_list = data.journals;
     res.render('index', {
@@ -38,8 +38,8 @@ router.get('/db/:type/:dname', function(req, res, next) {
     "_key": "conf_list",
     "dname": req.params.dname
   }, function(err, data) {
-    if (err) return handleError(err);
-    if (data == null) return handleError(err);
+    if (err) return handleError(err, req, res, next);
+    if (data == null) return handleError(err, req, res, next);
     data['data'].sort(function(a, b) {
       return a['pname'] < b['pname']
     });
@@ -65,14 +65,14 @@ router.get('/db/:type/:dname/:pname', function(req, res, next) {
     "_pname": req.params.pname,
     "_type": type
   }, function(err, proceeding) {
-    if (err) return handleError(err);
+    if (err) return handleError(err, req, res, next);
     models.article_model.find({
       "_dname": req.params.dname,
       "_pname": req.params.pname,
       "_type": type
     }, function(err, array) {
       if (proceeding == null) {
-        return handleError(err);
+        return handleError(err, req, res, next);
       }
       var m = {}
       for (const e of array) {
@@ -96,15 +96,28 @@ router.get('/db/:type/:dname/:pname', function(req, res, next) {
   });
 });
 
-router.post('/update_abstract/:hook', function(req, res, next) {
-  exec('',
+router.get('/update_abstract', function(req, res, next) {
+  var hook = req.query['hook']
+  c = exec('cd ../crawler; scrapy crawl dblp_article -a hook=' + hook,
     function(error, stdout, stderr) {
       console.log('stdout: ' + stdout);
       console.log('stderr: ' + stderr);
       if (error !== null) {
         console.log('exec error: ' + error);
+      } else {
+
       }
-    })();
+    });
+  c.on('exit', function() {
+    models.article_model.findOne({
+      "_hook": hook
+    }, function(err, article) {
+      if (err) return handleError(err, req, res, next);
+      res.json({
+        "abstract": article['abstract']
+      })
+    });
+  });
 })
 
 module.exports = router;
