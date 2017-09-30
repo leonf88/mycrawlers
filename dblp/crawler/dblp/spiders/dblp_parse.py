@@ -66,10 +66,12 @@ class DBLPParser(object):
         #   - session name
         #       - article list
         sessions = []
+
         # TODO how to get the child request object and assemble in parent
-        for e in response.xpath('//header[not(contains(@class, "headline noline"))]'):
-            article_list = e.xpath('following-sibling::ul[1]')
-            session_name = e.css("::text").extract_first()
+        heads = response.xpath(
+            '//header[not(contains(@class, "headline noline"))]')
+        if len(heads) == 0:
+            article_list = response.xpath('//ul[@class="publ-list"]')
             articles = []
             for e in article_list.xpath('./li[contains(@class, "entry")]'):
                 title = e.xpath(
@@ -80,8 +82,23 @@ class DBLPParser(object):
                 meta["_hook"] = hook
                 articles.append({"title": title, "_hook": hook})
                 yield response.follow(link, callback=self.get_bibtex_from_dblp, meta=meta)
+            sessions.append({"name": "", "articles": articles})
+        else:
+            for e in heads:
+                article_list = e.xpath('following-sibling::ul[1]')
+                session_name = e.css("::text").extract_first()
+                articles = []
+                for e in article_list.xpath('./li[contains(@class, "entry")]'):
+                    title = e.xpath(
+                        './/span[@class="title"]/text()').extract_first()
+                    link = e.xpath(
+                        './/a[contains(text(), "BibTeX")]/@href').extract_first()
+                    hook = hashlib.md5(link).hexdigest()
+                    meta["_hook"] = hook
+                    articles.append({"title": title, "_hook": hook})
+                    yield response.follow(link, callback=self.get_bibtex_from_dblp, meta=meta)
 
-            sessions.append({"name": session_name, "articles": articles})
+                sessions.append({"name": session_name, "articles": articles})
         self.db_client.add_issue(ttype, dname, pname, sessions)
         #
         # for k in sessions.keys():

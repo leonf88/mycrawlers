@@ -35,3 +35,12 @@ img.green {
   width: 12px;
   height: 12px;
 }
+
+.x_title h2 {
+  width: 62%;
+  font-size: 17px;
+}
+
+.x_title h2 small {
+  display: none
+}

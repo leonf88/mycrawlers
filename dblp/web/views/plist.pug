@@ -4,7 +4,7 @@ block content
   h1
     a(href='/') back
     | >
-    a(href='/'+type+'/'+dname) #{dname}
+    a(href='/db/'+type+'/'+dname) #{dname}
     | >
     a(href='http://dblp.uni-trier.de/db/'+type+'/'+dname+'/'+pname) #{pname}
 
@@ -25,6 +25,25 @@ block content
       div(class="panel-group", id="accordion")
         each e in articles
           li(class="list-group-item")
+            // div(class="x_panel")
+            //   div(class="x_heading")
+            //     if(e["abstract"] == '' || e["abstract"] == null)
+            //       img(src="/images/n.png" class="red")
+            //     else
+            //       img(src="/images/n.png" class="green")
+            //     span= e["title"]
+            //     span(class="name") #{e["author"]}
+            //     ul(class="nav navbar-right panel_toolbox")
+            //       li
+            //         a(class="collapse-link")
+            //           i(class="fa fa-chevron-up")
+            //     div(class="clearfix")
+            //   div(class="x_content")
+            //     div(id="coll"+idx, class="collapse" role="tabpanel")
+            //       div(class="card-block")
+            //         != e["abstract"]
+
+
             div(class="panel panel-success")
               div(class="panel-heading")
                 span(class="panel-title")
@@ -45,7 +64,7 @@ block content
               div(id="coll"+idx, class="collapse" role="tabpanel")
                 div(class="card-block")
                   != e["abstract"]
-            - idx++
+          - idx++
 
 block scripts
   script(src='/javascripts/dblp.js')

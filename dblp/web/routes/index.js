@@ -1,7 +1,16 @@
 var express = require('express');
 var models = require('../models')
 var router = express.Router();
-var exec = require('child_process').exec, child;
+var exec = require('child_process').exec,
+  child;
+
+function handleError(err, req, res, next) {
+  res.status(500)
+  res.render('error', {
+    error: err
+  })
+}
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -18,7 +27,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/:type/:dname', function(req, res, next) {
+router.get('/db/:type/:dname', function(req, res, next) {
   var type = null;
   if (req.params.type == "conf") {
     type = "conference";
@@ -30,6 +39,10 @@ router.get('/:type/:dname', function(req, res, next) {
     "dname": req.params.dname
   }, function(err, data) {
     if (err) return handleError(err);
+    if (data == null) return handleError(err);
+    data['data'].sort(function(a, b) {
+      return a['pname'] < b['pname']
+    });
     res.render('dlist', {
       pnames: data['data'],
       type: req.params.type,
@@ -39,7 +52,7 @@ router.get('/:type/:dname', function(req, res, next) {
 });
 
 
-router.get('/:type/:dname/:pname', function(req, res, next) {
+router.get('/db/:type/:dname/:pname', function(req, res, next) {
   var type = null;
   if (req.params.type == "conf") {
     type = "conference";
@@ -58,6 +71,9 @@ router.get('/:type/:dname/:pname', function(req, res, next) {
       "_pname": req.params.pname,
       "_type": type
     }, function(err, array) {
+      if (proceeding == null) {
+        return handleError(err);
+      }
       var m = {}
       for (const e of array) {
         m[e._hook] = e
