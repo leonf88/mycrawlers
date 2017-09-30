@@ -17,11 +17,14 @@ class LZSpider(scrapy.Spider):
 
     @classmethod
     def from_crawler(cls, crawler):
-        return cls(
+        spider = cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
             mongo_db=crawler.settings.get('MONGO_DATABASE', 'items'),
             mongo_coll=crawler.settings.get('MONGO_COLLECTION', 'scrapy_items')
         )
+        spider._set_crawler(crawler)
+        return spider
+
 
     def parse(self, response):
         for m in response.xpath("//tr[contains(@bgcolor, 'F5FAFE')]"):
