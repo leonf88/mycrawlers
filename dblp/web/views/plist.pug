@@ -25,45 +25,51 @@ block content
       div(class="panel-group", id="accordion")
         each e in articles
           li(class="list-group-item")
-            // div(class="x_panel")
-            //   div(class="x_heading")
-            //     if(e["abstract"] == '' || e["abstract"] == null)
-            //       img(src="/images/n.png" class="red")
-            //     else
-            //       img(src="/images/n.png" class="green")
-            //     span= e["title"]
-            //     span(class="name") #{e["author"]}
-            //     ul(class="nav navbar-right panel_toolbox")
-            //       li
-            //         a(class="collapse-link")
-            //           i(class="fa fa-chevron-up")
-            //     div(class="clearfix")
-            //   div(class="x_content")
-            //     div(id="coll"+idx, class="collapse" role="tabpanel")
-            //       div(class="card-block")
-            //         != e["abstract"]
-
-
-            div(class="panel panel-success")
-              div(class="panel-heading")
-                span(class="panel-title")
-                  if(e["abstract"] == '' || e["abstract"] == null)
-                    img(src="/images/n.png" class="red")
-                  else
-                    img(src="/images/n.png" class="green")
-                  a(data-toggle="collapse", data-parent="#accordion", href="#coll" + idx, aria-expanded="true", aria-controls="coll"+idx) [#{e["year"]}] #{e["title"]}
-                  div
-                    button(type="button" class="btn" aria-label="Left Align")
-                      a(href=e["link"], class="text-right")
-                        i(class="fa fa-link" aria-hidden="true")
-                    button(type="button" class="btn btn-default" aria-label="Left Align")
-                      a(href="javascript: void(0)" onclick="update_abstract(this, '"+e["_hook"]+"')" class="text-right")
+            div(class="x_panel")
+              div(class="x_heading")
+                if(e["abstract"] == '' || e["abstract"] == null)
+                  img(src="/images/n.png" class="red")
+                else
+                  img(src="/images/n.png" class="green")
+                a(data-toggle="collapse", data-parent="#accordion", href="#coll" + idx, aria-expanded="true", aria-controls="coll"+idx) [#{e["year"]}] #{e["title"]}
+                ul(class="nav navbar-right panel_toolbox")
+                  li
+                    a(href=e["link"], class="text-right")
+                      i(class="fa fa-link")
+                  li
+                    if(e["abstract"] == '' || e["abstract"] == null)
+                      a(href="javascript: void(0)" class="refresh-link" data-hook=e['_hook'])
                         i(class="fa fa-refresh" aria-hidden="true")
-                    // span #{e["_hook"]}
+                    else
+                      i(class="fa fa-refresh" aria-hidden="true")
+
+                div(class="clearfix")
                 span(class="name") #{e["author"]}
-              div(id="coll"+idx, class="collapse" role="tabpanel")
-                div(class="card-block")
-                  != e["abstract"]
+              div(class="x_content")
+                div(id="coll"+idx, class="collapse" role="tabpanel")
+                  div(class="card-block")
+                    != e["abstract"]
+
+            // div(class="panel panel-success")
+            //   div(class="panel-heading")
+            //     span(class="panel-title")
+            //       if(e["abstract"] == '' || e["abstract"] == null)
+            //         img(src="/images/n.png" class="red")
+            //       else
+            //         img(src="/images/n.png" class="green")
+            //       a(data-toggle="collapse", data-parent="#accordion", href="#coll" + idx, aria-expanded="true", aria-controls="coll"+idx) [#{e["year"]}] #{e["title"]}
+            //       div
+            //         button(type="button" class="btn" aria-label="Left Align")
+            //           a(href=e["link"], class="text-right")
+            //             i(class="fa fa-link" aria-hidden="true")
+            //         button(type="button" class="btn btn-default" aria-label="Left Align")
+            //           a(href="javascript: void(0)" onclick="update_abstract(this, '"+e["_hook"]+"')" class="text-right")
+            //             i(class="fa fa-refresh" aria-hidden="true")
+            //         // span #{e["_hook"]}
+            //     span(class="name") #{e["author"]}
+            //   div(id="coll"+idx, class="collapse" role="tabpanel")
+            //     div(class="card-block")
+            //       != e["abstract"]
           - idx++
 
 block scripts

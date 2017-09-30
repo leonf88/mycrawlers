@@ -97,6 +97,7 @@ router.get('/db/:type/:dname/:pname', function(req, res, next) {
 });
 
 router.get('/update_abstract', function(req, res, next) {
+  // res.json({"abstract": "hello"})
   var hook = req.query['hook']
   c = exec('cd ../crawler; scrapy crawl dblp_article -a hook=' + hook,
     function(error, stdout, stderr) {

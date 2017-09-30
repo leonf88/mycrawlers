@@ -44,3 +44,12 @@ img.green {
 .x_title h2 small {
   display: none
 }
+
+.navbar-right {
+  float: right;
+}
+
+.panel_toolbox li {
+  width: 2em;
+  padding: 0 5px 0 10px;
+}
