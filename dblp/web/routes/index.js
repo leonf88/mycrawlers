@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
   models.top_list_model.findOne({
     "_key": "top_list"
   }, function(err, data) {
-    if (err) return handleError(err, req, res, next);
+    if (err || ! data) return handleError(err, req, res, next);
     conference_list = data.conferences;
     journal_list = data.journals;
     res.render('index', {

@@ -4,7 +4,7 @@ import json
 import urlparse
 import scrapy
 import bibtexparser
-from .dblp_parse import DBLPParser
+from ..utils.dblp_parse import DBLPParser
 
 
 class DBLPIssueSpider(scrapy.Spider):
