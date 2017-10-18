@@ -176,7 +176,7 @@ class DBLPParser(object):
         if 'link.springer.com' in response.url:
             # from the springer
             abst = response.xpath(
-                "//section[@class='Abstract']/p/text()"
+                "//section[@class='Abstract']/p"
             ).extract_first()
             key_words = response.xpath(
                 "//div[@class='KeywordGroup']/span[@class='Keyword']/text()"

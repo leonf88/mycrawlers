@@ -1,0 +1,10 @@
+# https://www.usenix.org/conference/nsdi17/technical-sessions/presentation/perry
+# https://www.usenix.org/conference/nsdi16/technical-sessions/presentation/bai
+# https://www.usenix.org/conference/nsdi17/technical-sessions/presentation/crankshaw
+# https://www.usenix.org/conference/nsdi17/technical-sessions/presentation/vanini
+# https://www.usenix.org/conference/nsdi17/technical-sessions/presentation/xiao
+https://www.usenix.org/conference/nsdi14/technical-sessions/presentation/koponen
+https://www.usenix.org/conference/nsdi14/technical-sessions/presentation/rabkin
+https://www.usenix.org/conference/nsdi14/technical-sessions/presentation/lim
+https://www.usenix.org/conference/nsdi13/technical-sessions/presentation/nishtala
+https://www.usenix.org/conference/nsdi13/technical-sessions/presentation/liu_vincent
