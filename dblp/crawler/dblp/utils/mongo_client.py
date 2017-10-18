@@ -45,25 +45,21 @@ class MongoDBClient:
             upsert=True
         )
 
-    def add_conference_proceeding_title(self, dname, title, pname):
+    def _add_sub_header(self, key, dname, title, pname):
         self._collection.find_one_and_update(
             {
-                "_key": "conf_list",
+                "_key": key,
                 "dname": dname
             },
             {"$addToSet": {"data": {"title": title, "pname": pname}}},
             upsert=True
         )
 
-    def add_journal_volume_title(self, jname, new_volume):
-        self._collection.find_one_and_update(
-            {
-                "_key": "jour_list",
-                "name": jname
-            },
-            {"$addToSet": {"data": new_volume}},
-            upsert=True
-        )
+    def add_conference_proceeding_title(self, dname, title, pname):
+        self._add_sub_header("conf_list", dname, title, pname)
+
+    def add_journal_volume_title(self, jname, title, pname):
+        self._add_sub_header("jour_list", jname, title, pname)
 
     def add_issue(self, ttype, dname, pname, data):
         self._collection.find_one_and_update(
@@ -109,4 +105,4 @@ class MongoDBClient:
         return ret["data"]
 
     def get_article_by_hook(self, id):
-        return self._collection.find_one({ "_hook": id })
+        return self._collection.find_one({"_hook": id})

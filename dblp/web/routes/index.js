@@ -31,11 +31,14 @@ router.get('/db/:type/:dname', function(req, res, next) {
   var type = null;
   if (req.params.type == "conf") {
     type = "conference";
+    key = "conf_list"
   } else if (req.params.type == "jour") {
     type = "journal";
+    key = "jour_list"
   }
+    console.log(req.params.dname)
   models.conf_list_model.findOne({
-    "_key": "conf_list",
+    "_key": key,
     "dname": req.params.dname
   }, function(err, data) {
     if (err) return handleError(err, req, res, next);

@@ -7,7 +7,7 @@ function update_abstract(t, hook) {
     dataType: 'json',
     type: "GET",
     success: function(data) {
-      if (data != "") {
+      if (data['abstract'].trim() != "") {
         var panel_el = $(t).parentsUntil(".panel");
         var coll_el = panel_el.next('.collapse').attr('id');
         $("#" + coll_el).find('.card-block').html(data['abstract']);
@@ -36,7 +36,7 @@ $(document).ready(function() {
         el.find('.fa').attr('class', 'fa fa-refresh');
       },
       success: function(data) {
-        if (data != "") {
+        if (data['abstract'].trim() != "") {
           var panel_el = el.parentsUntil(".x_panel");
           var coll_el = panel_el.next('.x_content').find('.collapse').attr('id');
           $("#" + coll_el).find('.card-block').html(data['abstract']);

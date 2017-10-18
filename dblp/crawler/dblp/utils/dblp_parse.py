@@ -62,6 +62,11 @@ class DBLPParser(object):
             "_dname": dname,
         }
 
+        # TODO
+        # tracks
+        #   - sessions
+        #       - article list
+
         # sessions
         #   - session name
         #       - article list
